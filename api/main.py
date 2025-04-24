@@ -8,18 +8,7 @@ from tensorflow.keras.models import load_model
 
 app = FastAPI()
 
-# Load Keras model (active)
-# model = load_model("model.keras")
-
-# Load Pickle model (commented)
-# with open("model.pkl", "rb") as f:
-#     model = pkl.load(f)
-
-# model=pkl.load(open('model.pkl','rb'))
-
-from keras.models import load_model
-
-model = load_model("model.pkl")
+model = load_model("model")
 
 CLASS_NAMES = [
     'Tomato_Bacterial_spot', 'Tomato_Early_blight', 'Tomato_Late_blight',
