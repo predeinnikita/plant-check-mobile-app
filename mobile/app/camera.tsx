@@ -1,10 +1,12 @@
 import {Image, View} from "react-native";
 import {CameraView} from "expo-camera";
-import {Stack} from "expo-router";
+import {Stack, useRouter} from "expo-router";
 import {Button} from "@ant-design/react-native";
 import React, {useRef, useState} from "react";
 import ExpoCamera from "expo-camera/build/ExpoCamera";
 import {useTakePhoto} from "@/hooks/useTakePhoto";
+import {sendImageForRecognition, toBlob} from "@/api/process";
+import {addItem} from "@/app/storage";
 
 export default function Camera() {
     const cameraRef = useRef<null>(null);
@@ -15,11 +17,24 @@ export default function Camera() {
         await takePicture();
         setState('checking');
     }
+    const router = useRouter();
+
+    const onOk = async () => {
+        const blob = await toBlob(pictureURI || '')
+        const result = await sendImageForRecognition(blob);
+        const index = await addItem({
+            result: result.predicted_class,
+            confidence: String(result.confidence),
+            imageURI: pictureURI || '',
+        })
+
+        router.push(`/result?index=${index}`)
+    }
 
     return (
         <View style={{ height: '100%' }}>
 
-            <Stack.Screen options={{ title: 'Please, take a picture' }} />
+            <Stack.Screen options={{ title: '' }} />
 
             <View style={{ height: '90%' }}>
                 {state === 'taking' && (
@@ -43,7 +58,7 @@ export default function Camera() {
                 )}
                 {state === 'checking' && (
                     <View style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
-                        <Button style={{ width: '50%', height: '100%' }}>Ok</Button>
+                        <Button style={{ width: '50%', height: '100%' }} onPress={onOk}>Ok</Button>
                         <Button style={{ width: '50%', height: '100%' }}
                                 onPress={() => setState('taking')}>
                             Cancel

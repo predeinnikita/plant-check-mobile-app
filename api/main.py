@@ -5,8 +5,18 @@ import numpy as np
 import tensorflow as tf
 import pickle as pkl
 from tensorflow.keras.models import load_model
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# unsafe in production
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 model = load_model("model")
 
