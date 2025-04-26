@@ -4,6 +4,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {ThemedText} from "@/components/ThemedText";
 import {getAllItems, getItem, Item} from "@/app/storage";
 import {Loader} from "@/components/loader";
+import {formatClass} from "@/utils/format-class";
 
 export default function History() {
     const [items, setItems] = useState<Item[] | null>(null)
@@ -39,7 +40,7 @@ export default function History() {
                                    style={{ height: '100%', width: '100%', objectFit: 'cover', margin: 'auto', borderRadius: 10 }} />
                         </View>
                         <View style={{ padding: 10, gap: 10 }}>
-                            <ThemedText type="subtitle">{item.result}</ThemedText>
+                            <ThemedText type="subtitle">{formatClass(item.result)}</ThemedText>
                             <ThemedText type="default">{item.createdAt || new Date().toLocaleDateString()}</ThemedText>
                         </View>
                     </a>

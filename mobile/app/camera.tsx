@@ -5,7 +5,7 @@ import {Button} from "@ant-design/react-native";
 import React, {useRef, useState} from "react";
 import ExpoCamera from "expo-camera/build/ExpoCamera";
 import {useTakePhoto} from "@/hooks/useTakePhoto";
-import {sendImageForRecognition, toBlob} from "@/api/process";
+import {sendImageForRecognition, toBlob} from "@/utils/process";
 import {addItem} from "@/app/storage";
 
 export default function Camera() {

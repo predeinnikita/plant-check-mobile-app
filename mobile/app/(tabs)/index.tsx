@@ -5,9 +5,10 @@ import { Button } from "@ant-design/react-native";
 import React, {useEffect, useState} from "react";
 import {Link, useNavigation, useRouter} from "expo-router";
 import {launchImageLibrary} from "react-native-image-picker";
-import {sendImageForRecognition, toBlob} from "@/api/process";
+import {sendImageForRecognition, toBlob} from "@/utils/process";
 import {addItem, getAllItems, Item} from "@/app/storage";
 import {Loader} from "@/components/loader";
+import {formatClass} from "@/utils/format-class";
 
 export default function HomeScreen() {
     const router = useRouter();
@@ -68,7 +69,7 @@ export default function HomeScreen() {
                     <a key={i} style={{ display: 'block', textDecoration: 'auto' }} href={`/result?index=${item.index}`}>
                         <Image style={{height: 150, width: 150, borderRadius: 5}}
                                source={{ uri: item.imageURI }}/>
-                        <ThemedText style={{ width: 150, paddingTop: 10 }}>{item.result}</ThemedText>
+                        <ThemedText style={{ width: 150, paddingTop: 10 }}>{formatClass(item.result)}</ThemedText>
                     </a>
                 ))}
             </View>

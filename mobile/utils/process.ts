@@ -5,7 +5,7 @@ type RecognitionResult = {
     confidence: number;
 };
 
-const API_URL = 'http://localhost:55001';
+const API_URL = 'http://localhost:55000';
 
 export const toBlob = async (imageUri: string) => {
     const response = await fetch(imageUri);
@@ -16,9 +16,6 @@ export const sendImageForRecognition = async (
     file: Blob
 ): Promise<RecognitionResult> => {
     const formData = new FormData();
-    // const filename = imageUri.split('/').pop() || 'photo.jpg';
-    // const fileType = filename.split('.').pop();
-
     formData.append('file', file);
 
     const response = await fetch(`${API_URL}/process`, {

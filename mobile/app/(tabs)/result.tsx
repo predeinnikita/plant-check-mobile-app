@@ -8,6 +8,7 @@ import {useTakePhoto} from "@/hooks/useTakePhoto";
 import {ThemedText} from "@/components/ThemedText";
 import {getItem, Item} from "@/app/storage";
 import {Loader} from "@/components/loader";
+import {formatClass} from "@/utils/format-class";
 
 export default function Result() {
     const { index } = useLocalSearchParams();
@@ -39,7 +40,7 @@ export default function Result() {
 
             <View>
                 <ThemedText type="title" style={{ position: 'relative', paddingTop: 10, display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}>
-                    {item?.result}
+                    {formatClass(item?.result || '')}
                 </ThemedText>
 
                 <ThemedText type="default" style={{ position: 'relative', paddingTop: 10, paddingBottom: 10, display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}>
@@ -53,8 +54,7 @@ export default function Result() {
                 </ThemedText>
 
                 <ThemedText type="default" style={{ position: 'relative', paddingTop: 10, paddingBottom: 10, display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab cumque doloribus enim harum inventore molestiae nostrum quod similique tenetur? Accusamus aspernatur beatae esse illo illum laborum libero, modi qui similique!
-                </ThemedText>
+                    Remove and destroy all affected plants immediately to prevent the disease from spreading. Avoid composting infected material, as the spores can survive. Improve air circulation and avoid overhead watering to keep leaves dry. In the future, consider planting resistant tomato varieties and using preventive fungicide treatments.                </ThemedText>
             </View>
 
             <Loader isLoading={isLoading} />
