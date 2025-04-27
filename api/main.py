@@ -6,6 +6,10 @@ import tensorflow as tf
 import pickle as pkl
 from tensorflow.keras.models import load_model
 from fastapi.middleware.cors import CORSMiddleware
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
@@ -32,16 +36,22 @@ IMG_SIZE = 256
 
 @app.post("/process")
 async def process_image(file: UploadFile = File(...)):
+    logger.info(f"Received file: {file.filename}")
+
     image = Image.open(file.file).convert("RGB")
     image = image.resize((IMG_SIZE, IMG_SIZE))
-    image_array = np.array(image) / 255.0
-    image_array = np.expand_dims(image_array, axis=0)
 
-    prediction = model.predict(image_array)
-    predicted_class = CLASS_NAMES[np.argmax(prediction)]
-    confidence = float(np.max(prediction))
+    img_array = tf.keras.preprocessing.image.img_to_array(image)
+    img_array = tf.expand_dims(img_array, 0)
+
+    predictions = model.predict(img_array)
+
+    predicted_class = CLASS_NAMES[np.argmax(predictions[0])]
+    confidence = round(100 * (np.max(predictions[0])), 2)
+
+    logger.info(f"Prediction: {predicted_class} ({confidence:.2f}%)")
 
     return JSONResponse(content={
         "predicted_class": predicted_class,
-        "confidence": round(confidence * 100, 2)
+        "confidence": confidence
     })
